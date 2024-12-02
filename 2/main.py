@@ -42,8 +42,6 @@ def _check_report(report: list[int]) -> bool:
     is_safe = True
     increasing = report[0] - report[1] < 0
     for i in range(len(report) - 1):
-        curr = report[i]
-        next = report[i + 1]
         dist = report[i] - report[i + 1]
         # Report was increasing but started decreasing, therefore report is unsafe
         if increasing and dist > 0:
