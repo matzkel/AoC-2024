@@ -20,13 +20,14 @@ def sort_rule(rules: dict[str, list[int]], data: list[int]) -> list[int]:
     """
     rule_keys = set(map(lambda k: int(k), rules.keys()))
     nums = data
-    for idx_outer in range(len(nums)):
-        if data[idx_outer] not in rule_keys: continue
-        # right_num -> right side of the rule
-        for right_num in rules[str(nums[idx_outer])]:
-            for idx_inner in range(len(nums)):
-                if nums[idx_inner] != right_num or idx_outer < idx_inner: continue
-                nums[idx_outer], nums[idx_inner] = nums[idx_inner], nums[idx_outer]
+    while (not check_rule(rules, nums)):
+        for idx_outer in range(len(nums)):
+            if data[idx_outer] not in rule_keys: continue
+            # right_num -> right side of the rule
+            for right_num in rules[str(nums[idx_outer])]:
+                for idx_inner in range(len(nums)):
+                    if nums[idx_inner] != right_num or idx_outer < idx_inner: continue
+                    nums[idx_outer], nums[idx_inner] = nums[idx_inner], nums[idx_outer]
     return nums
 
 def main():
@@ -60,11 +61,7 @@ def main():
 
     sorted_nums = []
     for num in incorrect_nums:
-        correct_num = num
-        # Rawdog it (Better way would be to modify the algorithm)
-        while not check_rule(rules, num):
-            correct_num = sort_rule(rules, correct_num)
-        sorted_nums.append(correct_num)
+        sorted_nums.append(sort_rule(rules, num))
     middle_nums = sum([nums[len(nums) // 2] for nums in sorted_nums])
     print(f"Sum of middle nums from initially incorrect lists (part 2): {middle_nums}")
 
